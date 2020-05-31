@@ -34,9 +34,7 @@ async function verifyParagraph(i, parag) {
 
         }
         if (/case(s)?|contamined(s)?|infected(s)?/.test(paragText)) {
-            fetch('https://api.covid19api.com/summary').then(r => r.text()).then(result => {
-                alert(result)
-            })
+            
         }
     }
 }

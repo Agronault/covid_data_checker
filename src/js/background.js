@@ -1,3 +1,5 @@
+let summary = {}
+
 chrome.runtime.onConnect.addListener((portFrom) => {
     if(portFrom.name === 'background-content') {
        portFrom.onMessage.addListener((message, sendingPort) => {
@@ -5,6 +7,9 @@ chrome.runtime.onConnect.addListener((portFrom) => {
               const hasCovid = message.payload.hasCovid
               if (hasCovid) {
                 chrome.browserAction.setIcon({path: {"19": "/icons/ok_19.png", "38": "/icons/ok_38.png"}, tabId: sendingPort.sender.tab.id})
+                fetch('https://api.covid19api.com/summary').then(r => r.text()).then(result => {
+                    summary = JSON.parse(result)
+                })
               } else {
                 chrome.browserAction.setIcon({path: {"19": "/icons/idle_icon_19.png", "38": "/icons/idle_icon_38.png"}, tabId: sendingPort.sender.tab.id})
               }
@@ -12,3 +17,7 @@ chrome.runtime.onConnect.addListener((portFrom) => {
        })
     }
  })
+
+fetch('https://api.covid19api.com/summary').then(r => r.text()).then(result => {
+    summary = JSON.parse(result)
+})

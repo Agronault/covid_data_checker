@@ -10,7 +10,7 @@
     },
     "permissions": [
         "webNavigation",
-        "https://api.covid19api.com"
+        "https://api.covid19api.com/*"
     ],
     "browser_action": {
         "default_icon": "icons/idle_icon.png",
