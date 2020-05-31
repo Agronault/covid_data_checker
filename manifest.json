@@ -4,7 +4,7 @@
     "version": "0.1",
     "description": "Automatically checks the accuracy of coronavirus data on the sites you visit.",
     "browser_action": {
-        "default_icon": "icons/ok.png",
+        "default_icon": "icons/icon.png",
         "default_title": "COVID Data Checker"
       },
     "content_scripts": [
@@ -16,7 +16,7 @@
         }
       ],
     "background": {
-        "scripts": ["src/js/background.js"],
+        "scripts": ["src/js/jquery-min.js", "src/js/background.js"],
         "persistent": false
     }
 }
