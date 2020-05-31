@@ -3,6 +3,9 @@
     "name": "COVID Data Checker",
     "version": "0.1",
     "description": "Automatically checks the accuracy of coronavirus data on the sites you visit.",
+    "permissions": [
+        "webNavigation"
+    ],
     "browser_action": {
         "default_icon": "icons/icon.png",
         "default_title": "COVID Data Checker"
