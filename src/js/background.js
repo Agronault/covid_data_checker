@@ -42,9 +42,11 @@ function adjustURL(completeURL){
 }
 
 function checkURL(URL,sendingPort){
-  for(var i = 0; i < summary.untrusted.length ; i++)
-    if(!summary.untrusted[i].toUpperCase().localeCompare(URL.toUpperCase())){
-      chrome.browserAction.setIcon({path: {"19": "/icons/not_19.png", "38": "/icons/not_38.png"}, tabId: sendingPort.sender.tab.id});
-      break;
-    }
+  for(var i = 0; i < summary.untrusted.length ; i++){
+      const urlRgx = new RegExp(summary.untrusted[i], 'i')
+      if(urlRgx.test(URL)){
+        chrome.browserAction.setIcon({path: {"19": "/icons/not_19.png", "38": "/icons/not_38.png"}, tabId: sendingPort.sender.tab.id});
+        break;
+      }
+  }
 }
