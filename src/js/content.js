@@ -2,6 +2,8 @@ const countries = "Albania|Andorra|Antigua|Barbuda|Armenia|Austria|Bahamas|Bangl
 const countryDataRegex = new RegExp(`(${countries}).*\d+`, 'i')
 const countryNameRegex = new RegExp(`${countries}`, 'i')
 
+let countryIds = {}
+
 let contentPort = chrome.runtime.connect({
     name: 'background-content'
  })
@@ -27,34 +29,36 @@ async function verifyParagraph(i, parag) {
     if (countryDataRegex.test(paragText)) {
         parag.innerHTML = `<span style = "background: rgba(0, 255, 87, 0.57);" >${paragText}</span>`
         const country = paragText.match(countryNameRegex)
+
         if (/dea(d)?|death(s)?/i.test(paragText)) {
 
         }
         if (/case(s)?|contamined(s)?|infected(s)?/.test(paragText)) {
-            //const client = new HttpClient()
-            /*
-            client.get('https://api.covid19api.com/countries', (res) => {
-                alert(res)
+            fetch('https://api.covid19api.com/summary').then(r => r.text()).then(result => {
+                alert(result)
             })
-            */
         }
     }
 }
 
-/*
-class HttpClient {
-    constructor() {
-        this.get = function (aUrl, aCallback) {
-            var anHttpRequest = new XMLHttpRequest()
-            anHttpRequest.onreadystatechange = function () {
-                if (anHttpRequest.readyState == 4 && anHttpRequest.status == 200)
-                    aCallback(anHttpRequest.responseText)
-            }
-            anHttpRequest.open("GET", aUrl, true)
-            anHttpRequest.send(null)
+function parseCountryContamined (res, countryName) {
+    summary = JSON.parse(res)
+    const countries = summary.Countries
+    for (const country of countries) {
+        const countryNameRgx = new RegExp(countryName, 'i')
+        if (countryNameRgx.test(country.Country)) {
+            alert(`confirmed cases in ${countryName} is actually: ${country.TotalConfirmed}`)
         }
     }
 }
-*/
 
-
+function httpGetAsync(theUrl, countryName, callback)
+{
+    var xmlHttp = new XMLHttpRequest();
+    xmlHttp.onreadystatechange = function() { 
+        if (xmlHttp.readyState == 4 && xmlHttp.status == 200)
+            callback(xmlHttp.responseText, countryName);
+    }
+    xmlHttp.open("GET", theUrl, true); // true for asynchronous 
+    xmlHttp.send(null);
+}
