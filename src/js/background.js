@@ -1,27 +1,14 @@
-chrome.webNavigation.onCompleted.addListener(checkCOVID);
-
-async function checkCOVID () {
-    const parags = $('p')
-    let hasCovid = false
-    
-    chrome.browserAction.setIcon({path:"/icons/icon.png"})
-    chrome.browserAction.setTitle({title: 'searching'})
-
-    parags.each((i, parag)=>{
-        const paragText = $(parag).text()
-        if(/covid|coronavirus/i.test(paragText)) {
-            hasCovid = true
-        }
-    })
-    alert(hasCovid)
-    switch (hasCovid) {
-        case true:
-            chrome.browserAction.setIcon({path:"/icons/ok.png"})
-            chrome.browserAction.setTitle({title: 'found'})
-            break
-        case false:
-            chrome.browserAction.setIcon({path:"/icons/not.png"})
-            chrome.browserAction.setTitle({title: 'not found'})    
-            break
+chrome.runtime.onConnect.addListener((portFrom) => {
+    if(portFrom.name === 'background-content') {
+       portFrom.onMessage.addListener((message) => {
+          if (message.type === 'HASCOVID') {
+              const hasCovid = message.payload.hasCovid
+              if (hasCovid) {
+                chrome.browserAction.setIcon({path: {"19": "/icons/ok_19.png", "38": "/icons/ok_38.png"}})
+              } else {
+                chrome.browserAction.setIcon({path: {"19": "/icons/not_19.png", "38": "/icons/not_38.png"}})
+              }
+          }
+       })
     }
-}
+ })

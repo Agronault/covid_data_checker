@@ -2,13 +2,28 @@ const countries = "Albania|Andorra|Antigua|Barbuda|Armenia|Austria|Bahamas|Bangl
 const countryDataRegex = new RegExp(`(${countries}).*\d+`, 'i')
 const countryNameRegex = new RegExp(`${countries}`, 'i')
 
+let contentPort = chrome.runtime.connect({
+    name: 'background-content'
+ })
+
 var parags = $('p')
 
+let hasCovid = false
 
 parags.each(verifyParagraph)
 
+contentPort.postMessage({
+    type: 'HASCOVID', 
+    payload: {
+       hasCovid,       
+    }
+ })
+
 async function verifyParagraph(i, parag) {
     const paragText = $(parag).text()
+
+    if (/covid|coronavirus/i.test(paragText)) hasCovid = true
+    
     if (countryDataRegex.test(paragText)) {
         parag.innerHTML = `<span style = "background: rgba(0, 255, 87, 0.57);" >${paragText}</span>`
         const country = paragText.match(countryNameRegex)
@@ -16,14 +31,17 @@ async function verifyParagraph(i, parag) {
 
         }
         if (/case(s)?|contamined(s)?|infected(s)?/.test(paragText)) {
-            const client = new HttpClient()
+            //const client = new HttpClient()
+            /*
             client.get('https://api.covid19api.com/countries', (res) => {
                 alert(res)
             })
+            */
         }
     }
 }
 
+/*
 class HttpClient {
     constructor() {
         this.get = function (aUrl, aCallback) {
@@ -37,4 +55,6 @@ class HttpClient {
         }
     }
 }
+*/
+
 
