@@ -22,9 +22,17 @@
   </head>
   <body>
 
-    <p><span style="font-size: 19px;">Covid Data Checker</span></p>
-    <button class="w3-button w3-block w3-black" id="button"><b> Report site </b></button>
+    <p><span style="font-size: 19px;" id="text">Covid Data Checker</span></p>
+    <button onclick="reportSite()" id="report"><b> Report site </b></button>
     <script src="popup.js"></script>
+
+    <script>
+      function reportSite() {
+        document.querySelector('#text').textContent = 'Site successfully reported';
+        document.body.style.background = '#ffc299';
+        alert('Thanks for feedback.');
+      }
+      </script>
     
   </body>
 </html>
