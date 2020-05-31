@@ -15,7 +15,7 @@ parags.each(verifyParagraph)
 contentPort.postMessage({
     type: 'HASCOVID', 
     payload: {
-       hasCovid,       
+       hasCovid   
     }
  })
 
