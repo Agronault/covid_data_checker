@@ -17,7 +17,8 @@ parags.each(verifyParagraph)
 contentPort.postMessage({
     type: 'HASCOVID', 
     payload: {
-       hasCovid   
+       hasCovid,
+       url: window.location.href,   
     }
  })
 
@@ -39,24 +40,3 @@ async function verifyParagraph(i, parag) {
     }
 }
 
-function parseCountryContamined (res, countryName) {
-    summary = JSON.parse(res)
-    const countries = summary.Countries
-    for (const country of countries) {
-        const countryNameRgx = new RegExp(countryName, 'i')
-        if (countryNameRgx.test(country.Country)) {
-            alert(`confirmed cases in ${countryName} is actually: ${country.TotalConfirmed}`)
-        }
-    }
-}
-
-function httpGetAsync(theUrl, countryName, callback)
-{
-    var xmlHttp = new XMLHttpRequest();
-    xmlHttp.onreadystatechange = function() { 
-        if (xmlHttp.readyState == 4 && xmlHttp.status == 200)
-            callback(xmlHttp.responseText, countryName);
-    }
-    xmlHttp.open("GET", theUrl, true); // true for asynchronous 
-    xmlHttp.send(null);
-}
